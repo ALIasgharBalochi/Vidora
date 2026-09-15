@@ -21,5 +21,7 @@ class WatchedVideo(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="watched_videos"
     )
-    video = models.ForeignKey(Video, related_name="watched_videos")
+    video = models.ForeignKey(
+        Video, on_delete=models.CASCADE, related_name="watched_videos"
+    )
     watched_minuts = models.IntegerField()

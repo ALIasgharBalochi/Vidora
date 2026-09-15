@@ -9,7 +9,9 @@ class Plans(models.Model):
 
 
 class CustomUser(AbstractUser):
-    plan = models.ForeignKey(Plans, on_delete=models.PROTECT, related_name="users")
+    plan = models.ForeignKey(
+        Plans, on_delete=models.PROTECT, null=True, blank=True, related_name="users"
+    )
 
 
 class Transactin(models.Model):
@@ -18,6 +20,10 @@ class Transactin(models.Model):
         CustomUser, on_delete=models.CASCADE, related_name="transactions"
     )
     plane = models.ForeignKey(
-        Plans, on_delete=models.SET_NULL, related_name="transactions"
+        Plans,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="transactions",
     )
     created_at = models.DateTimeField(auto_now_add=True)
