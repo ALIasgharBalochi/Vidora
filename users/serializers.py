@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from .models import Plans, Transactin
 
 User = get_user_model()
 
@@ -18,3 +19,16 @@ class UserSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField(write_only=True)
+
+
+class PlansSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Plans
+        fields = "__all__"
+        extra_kwargs = {"price": {"read_only": True}}
+
+
+class TransactoinSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transactin
+        fields = "__all__"
