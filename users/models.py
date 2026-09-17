@@ -7,6 +7,9 @@ class Plans(models.Model):
     plane_name = models.CharField(choices=plane_choises)
     price = models.FloatField()
 
+    def __str__(self):
+        return self.plane_name
+
 
 class CustomUser(AbstractUser):
     plan = models.ForeignKey(
@@ -27,3 +30,6 @@ class Transactin(models.Model):
         related_name="transactions",
     )
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.username
