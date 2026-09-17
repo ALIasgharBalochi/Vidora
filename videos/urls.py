@@ -5,6 +5,8 @@ from .views import (
     CreateCommentView,
     ListWatchedVideo,
     DetailVideoView,
+    LikeVideoView,
+    RatingVideoView,
 )
 
 urlpatterns = [
@@ -13,4 +15,6 @@ urlpatterns = [
     path("add_comments/", CreateCommentView.as_view(), name="add_comments"),
     path("watched_videos/", ListWatchedVideo.as_view(), name="watched_videos"),
     path("move_detail/<int:pk>/", DetailVideoView.as_view(), name="movie_detail"),
+    path("like/", LikeVideoView.as_view(), name="like_video"),
+    path("rating/", RatingVideoView.as_view(), name="rate_video"),
 ]
