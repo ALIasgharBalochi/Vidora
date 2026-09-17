@@ -9,10 +9,15 @@ class VideoSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class CommentSerializer(serializers.ModelSerializer):
+class ListCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = "__all___"
+        fields = "__all__"
+
+
+class CreateCommentSerializer(serializers.Serializer):
+    video = serializers.PrimaryKeyRelatedField(queryset=Video.objects.all())
+    message = serializers.CharField()
 
     def create(self, validated_data):
         return Comment.objects.create(**validated_data)

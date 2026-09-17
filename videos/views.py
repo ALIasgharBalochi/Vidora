@@ -1,5 +1,10 @@
 from django.shortcuts import render
-from .seiralizers import VideoSerializer, WatchedSerializer, CommentSerializer
+from .seiralizers import (
+    VideoSerializer,
+    WatchedSerializer,
+    CreateCommentSerializer,
+    ListCommentSerializer,
+)
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
 from .models import Video, WatchedVideo, Comment
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -23,7 +28,7 @@ class DetailVideoView(RetrieveAPIView):
 
     def get(self, request, *args, **kwargs):
 
-        if self.request.user.IsAuthenticated:
+        if self.request.user.is_authenticated:
             user = self.request.user
             video = Video.objects.get(id=self.kwargs["pk"])
             wateched_minuts = random.randrange(0, 90)
@@ -53,7 +58,7 @@ class ListWatchedVideo(ListAPIView):
 
 class ListCommentView(ListAPIView):
     permission_classes = [AllowAny]
-    serializer_class = CommentSerializer
+    serializer_class = ListCommentSerializer
 
     def get_queryset(self):
         movie_id = self.kwargs["pk"]
@@ -63,7 +68,7 @@ class ListCommentView(ListAPIView):
 class CreateCommentView(CreateAPIView):
     queryset = Comment.objects.all()
     permission_classes = [IsAuthenticated]
-    serializer_class = CommentSerializer
+    serializer_class = CreateCommentSerializer
 
     def perform_create(self, serializer):
         user = self.request.user
