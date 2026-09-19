@@ -7,6 +7,7 @@ from .seiralizers import (
     AddLikeVideo,
     AddRatingVideo,
 )
+from rest_framework.response import Response
 from django.db.models import Count, Avg
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
 from .models import Video, WatchedVideo, Comment, LikeVide, RatingVideo
@@ -14,6 +15,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth import get_user_model
 import random
 from users.permissions import PlanPermission
+from django.utils import timezone
 
 User = get_user_model()
 # Create your views here.
@@ -36,25 +38,19 @@ class DetailVideoView(RetrieveAPIView):
     permission_classes = [IsAuthenticated, PlanPermission]
 
     def get(self, request, *args, **kwargs):
-
-        if self.request.user.is_authenticated:
-            user = self.request.user
+        if request.user.plan and request.user.plan.end_time > timezone.now():
             video = Video.objects.get(id=self.kwargs["pk"])
             wateched_minuts = random.randrange(0, 90)
-            try:
-                WatchedVideo.objects.filter(
-                    user=request.user,
-                    video_id=video.id,
-                ).update(watched_minuts=wateched_minuts)
-            except WatchedVideo.DoesNotExist:
-                try:
-                    WatchedVideo.objects.create(
-                        user=user, video=video, watched_minuts=wateched_minuts
-                    )
-                except Exception as e:
-                    print("fail to add to watched ")
 
-        return super().get(request, *args, **kwargs)
+            watched_video, created = WatchedVideo.objects.update_or_create(
+                user=request.user,
+                video=video,
+                defaults={
+                    "watched_minuts": wateched_minuts,
+                },
+            )
+            return super().get(request, *args, **kwargs)
+        return Response({"message": "your plan is expire"}, status=400)
 
 
 class ListWatchedVideo(ListAPIView):

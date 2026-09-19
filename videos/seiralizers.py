@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Video, Comment, WatchedVideo, LikeVide, RatingVideo
+from django.db import IntegrityError
 
 
 class VideoSerializer(serializers.ModelSerializer):
@@ -40,7 +41,12 @@ class AddLikeVideo(serializers.ModelSerializer):
         read_only_fields = ["user"]
 
     def create(self, validated_data):
-        return LikeVide.objects.create(**validated_data)
+        try:
+            return LikeVide.objects.create(**validated_data)
+        except IntegrityError:
+            raise serializers.ValidationError(
+                {"message": "You have already liked this."}
+            )
 
 
 class AddRatingVideo(serializers.ModelSerializer):
@@ -58,4 +64,9 @@ class AddRatingVideo(serializers.ModelSerializer):
         return value
 
     def create(self, validated_data):
-        return RatingVideo.objects.create(**validated_data)
+        try:
+            return RatingVideo.objects.create(**validated_data)
+        except IntegrityError:
+            raise serializers.ValidationError(
+                {"message": "You have already rated this."}
+            )
