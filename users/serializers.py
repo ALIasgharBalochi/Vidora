@@ -20,7 +20,12 @@ class PlansSerializer(serializers.ModelSerializer):
     class Meta:
         model = Plans
         fields = "__all__"
-        extra_kwargs = {"price": {"read_only": True}}
+        extra_kwargs = {
+            "price": {"read_only": True},
+            "is_active": {"read_only": True},
+            "start_time": {"read_only": True},
+            "end_time": {"read_only": True},
+        }
 
 
 class TransactoinSerializer(serializers.ModelSerializer):

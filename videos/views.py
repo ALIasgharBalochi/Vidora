@@ -13,6 +13,7 @@ from .models import Video, WatchedVideo, Comment, LikeVide, RatingVideo
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth import get_user_model
 import random
+from users.permissions import PlanPermission
 
 User = get_user_model()
 # Create your views here.
@@ -32,7 +33,7 @@ class ListVideoView(ListAPIView):
 class DetailVideoView(RetrieveAPIView):
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated, PlanPermission]
 
     def get(self, request, *args, **kwargs):
 
@@ -41,9 +42,10 @@ class DetailVideoView(RetrieveAPIView):
             video = Video.objects.get(id=self.kwargs["pk"])
             wateched_minuts = random.randrange(0, 90)
             try:
-
-                watch_video = WatchedVideo.objects.get(user=user, video=video)
-                watch_video.objects.update(watched_minuts=wateched_minuts)
+                WatchedVideo.objects.filter(
+                    user=request.user,
+                    video_id=video.id,
+                ).update(watched_minuts=wateched_minuts)
             except WatchedVideo.DoesNotExist:
                 try:
                     WatchedVideo.objects.create(

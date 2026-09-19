@@ -84,7 +84,7 @@ class SendPaymentInfoView(APIView):
 
 
 class VerifyPaymentView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request):
         authority = request.GET.get("Authority")
