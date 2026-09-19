@@ -17,7 +17,7 @@ class CustomUser(AbstractUser):
     )
 
 
-class Transactin(models.Model):
+class TransActin(models.Model):
     price = models.FloatField()
     user = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE, related_name="transactions"
@@ -30,6 +30,9 @@ class Transactin(models.Model):
         related_name="transactions",
     )
     created_at = models.DateTimeField(auto_now_add=True)
+    authority = models.CharField(default="121212121212121")
+    card_number = models.CharField(null=True, blank=True)
+    fee = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.user.username

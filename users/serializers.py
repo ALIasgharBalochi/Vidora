@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import Plans, Transactin
+from .models import Plans, TransActin
 
 User = get_user_model()
 
@@ -25,5 +25,9 @@ class PlansSerializer(serializers.ModelSerializer):
 
 class TransactoinSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Transactin
+        model = TransActin
         fields = "__all__"
+
+
+class SendPaymentInfor(serializers.Serializer):
+    plan_id = serializers.PrimaryKeyRelatedField(queryset=Plans.objects.all())

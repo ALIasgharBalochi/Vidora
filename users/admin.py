@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Plans, CustomUser, Transactin
+from .models import Plans, CustomUser, TransActin
 
 # Register your models here.
 
@@ -14,6 +14,6 @@ class AdminCustomUser(admin.ModelAdmin):
     pass
 
 
-@admin.register(Transactin)
+@admin.register(TransActin)
 class AdminTransaction(admin.ModelAdmin):
     pass
