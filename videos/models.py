@@ -6,7 +6,9 @@ User = get_user_model()
 
 
 class Video(models.Model):
+    plane_choises = [("bronze", "Bronze"), ("silver", "Silver"), ("gold", "Gold")]
     url = models.CharField()
+    required_plan = models.CharField(choices=plane_choises)
 
     def __str__(self):
         return self.url

@@ -1,11 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from dateutil.relativedelta import relativedelta
+
+from datetime import datetime
+
+
+def default_end_time():
+    return datetime.now() + relativedelta(months=1)
 
 
 class Plans(models.Model):
-    plane_choises = [("br", "Bronze"), ("sl", "Silver"), ("gl", "Gold")]
+    plane_choises = [("bronze", "Bronze"), ("silver", "Silver"), ("gold", "Gold")]
     plane_name = models.CharField(choices=plane_choises)
     price = models.FloatField()
+    is_active = models.BooleanField(default=True)
+    start_time = models.DateTimeField(auto_now_add=True)
+    end_time = models.DateTimeField(default=default_end_time)
 
     def __str__(self):
         return self.plane_name
