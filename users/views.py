@@ -117,3 +117,17 @@ class VerifyPaymentView(APIView):
                 return Response({"message": "payment failed2"}, status=400)
         else:
             return Response({"message": "payment failed3"}, status=400)
+
+
+class CancelPlan(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        if user.plan:
+            user.plan = None
+            user.save()
+            return Response({"message": "plan cancel successfuly"}, status=200)
+        return Response(
+            {"message": "You do not have an active subscription"}, status=400
+        )

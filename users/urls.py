@@ -7,6 +7,7 @@ from .views import (
     SendPaymentInfoView,
     VerifyPaymentView,
     MyPlanView,
+    CancelPlan,
 )
 
 urlpatterns = [
@@ -15,6 +16,7 @@ urlpatterns = [
     path("transactions/", ListTransactionsView.as_view(), name="transactions"),
     path("plans/", ListPlansView.as_view(), name="plans"),
     path("my_plan/", MyPlanView.as_view(), name="my_plan"),
+    path("cancel_plan/", CancelPlan.as_view(), name="cancel_plane"),
     path(
         "payment/send_payment_info/",
         SendPaymentInfoView.as_view(),
